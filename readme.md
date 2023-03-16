@@ -51,5 +51,5 @@ ldapdelete -W -D "cn=admin,dc=example,dc=org" "cn=chupetoide,ou=users,dc=example
 - [OPEN LDAP DOCKERHUB DOCS](https://hub.docker.com/r/bitnami/openldap/)
 - [SONARQUBE DOCKERHUB DOCS](https://hub.docker.com/_/sonarqube)
 - [LDAP CLI](https://www.thegeekstuff.com/2015/02/openldap-add-users-groups/)
-
+- [LDAP UI MANAGER](https://hub.docker.com/r/wheelybird/ldap-user-manager)
 
