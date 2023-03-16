@@ -1,0 +1,10 @@
+dn: cn=chupetoide,ou=users,dc=example,dc=org
+cn: chupetoide
+sn: Bar3
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: chupetoide
+uidNumber: 1002
+gidNumber: 1002
+homeDirectory: /home/chupetoide

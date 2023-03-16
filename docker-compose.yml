@@ -1,0 +1,34 @@
+version: '3'
+services:
+  openldap:
+    image: docker.io/bitnami/openldap:2.6
+    ports:
+      - '1389:1389'
+      - '1636:1636'
+    environment:
+      - LDAP_ADMIN_USERNAME=admin
+      - LDAP_ADMIN_PASSWORD=adminpassword
+      - LDAP_USERS=user01,user02
+      - LDAP_PASSWORDS=password1,password2
+    volumes:
+      - 'openldap_data:/bitnami/openldap'
+  sonarqube:
+    environment:
+        - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true # if the elasticsearch startup checks should be enforced or not
+        - SONAR_SECURITY_REALM=LDAP # Enable LDAP
+        - LDAP_USER_BASEDN=ou=users,dc=example,dc=org # User base tree
+        - SONAR_AUTHENTICATOR_DOWNCASE=true # if case sensitive tree
+        - 'LDAP_URL=ldap://openldap:1389' # ldap address
+        - 'LDAP_BINDDN=cn=admin,dc=example,dc=org' # ldap admin user
+        - LDAP_BINDPASSWORD=adminpassword # ldap admin password
+        - LDAP_AUTHENTICATION=simple # ldap access method
+        - LDAP_REALM=example.org # domain
+        # - LDAP_STARTTLS=true
+    depends_on:
+      - openldap
+    ports:
+        - '9000:9000'
+    image: 'sonarqube:latest'
+volumes:
+  openldap_data:
+    driver: local
