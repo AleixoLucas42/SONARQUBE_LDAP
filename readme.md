@@ -7,7 +7,7 @@ This is a pratical example how sonarqube can connect with ldap to manage users u
 - Automatic synchronization of relationships between users and groups (authorization)
 - Ability to authenticate against both the external and the internal authentication systems. There is an automatic fallback to the SonarQube internal system if the LDAP server is down
 - During the first authentication trial, if the user's password is correct, the SonarQube database is automatically populated with the new user. Each time a user logs into SonarQube, the username, the email, and the groups this user belongs to that are refreshed in the SonarQube database. You can choose to have group membership synchronized as well, but this is not the default
->[REFERENCE](https://docs.sonarqube.org/9.8/instance-administration/authentication/ldap/)<
+>[REFERENCE](https://docs.sonarqube.org/9.8/instance-administration/authentication/ldap/)
 
 ## Setup
 - Configure LDAP by editing `<SONARQUBE_HOME>/conf/sonar.properties` (in this case we used environ variables).
@@ -21,29 +21,18 @@ INFO o.s.p.l.LdapContextFactory Test LDAP connection: OK
 ## Tecnology
 - Docker
 - LDAP
+- Windows server active directory
 ## Containers
-- [bitnami/openldap](https://hub.docker.com/r/bitnami/openldap)
 - [sonarqube](https://hub.docker.com/_/sonarqube)
 # How to test:
 - run command
 > docker-compose up
-- you can test if ldap is listening using openldap package. (It will ask ldap password wich is  `adminpassword`)
-> ldapsearch -x -b "dc=example,dc=org" -H ldap://127.0.0.1:1389 -D "cn=admin,dc=example,dc=org" -W
-- you can also create/delete a user on [ldap cli](https://www.thegeekstuff.com/2015/02/openldap-add-users-groups/)
-```
-CREATE:
-ldapadd -x -W -D "cn=admin,dc=example,dc=org" -H ldap://127.0.0.1:1389 -f chupetoide.ldif
-ldappasswd -s chupetoide1 -W -D "cn=admin,dc=example,dc=org" -x "cn=chupetoide,ou=users,dc=example,dc=org" -H ldap://127.0.0.1:1389
-
-#DELETE
-ldapdelete -W -D "cn=admin,dc=example,dc=org" "cn=chupetoide,ou=users,dc=example,dc=org" -H ldap://127.0.0.1:1389
-```
 - access the sonarqube interface
 > http://localhost:9000
 - User and password should be `admin`
-- After validate that user admin is working, you have to try access with ldap user wich is in openldap environment variables
-> user: user01 and password: password01
-- After log in with ldap user, as administrator you can see the ldap user on users tab at sonarqube configuration.
+- After validate that user admin is working, you have to try access with ldap user of active directory
+- After log in with ldap user, back to administrator and you can see the ldap user on users tab at sonarqube configuration.
+- To associate user to a AD group, you have to [manually create a group](https://docs.sonarsource.com/sonarqube/9.9/instance-administration/authentication/overview/) with the same name on sonarqube interface.
 
 # REFERENCE LINKS
 - [SONARQUBE LDAP ENV VARIABLES](https://docs.sonarqube.org/latest/setup-and-upgrade/configure-and-operate-a-server/environment-variables/#ldap-configuration)
